@@ -4,9 +4,9 @@ library(dplyr)
 library(ggplot2)
 library(e1071)
 
-# 执行runSVM函数
+# run runSVM
 run_svm_and_plot <- function(data_path, props, run_name, n_runs) {
-  # 读取数据和运行runSVM函数
+  # load data
   lda_data <- read.csv(data_path, header = TRUE, stringsAsFactors = FALSE)
   rownames(lda_data) <- lda_data[, 1]
   lda_data <- lda_data[, -1]
@@ -17,22 +17,22 @@ run_svm_and_plot <- function(data_path, props, run_name, n_runs) {
     summarise(avg_accu = mean(accu), sd_accu = sd(accu)) %>%
     ungroup()
   
-  # 绘制图形
+  # plot
   p <- ggplot() +
-    # 绘制第一条线
+    # first line
     geom_errorbar(data = result_lda, aes(x = train_prop, y = avg_accu, group = run_name, 
                                          ymin = avg_accu - sd_accu, ymax = avg_accu + sd_accu), width =.02, color = "blue") +
     geom_line(data = result_lda, aes(x = train_prop, y = avg_accu, group = run_name, color = "LDA"), size = 1) +
     geom_point(data = result_lda, aes(x = train_prop, y = avg_accu, group = run_name, color = "LDA"), size = 4) +
     xlab("Traning Data Proportion") +
     ylab("Prediction Accuracy") +
-    # 设置颜色图例
+    
     scale_color_manual(name = "Lines", values = c(LDA = "blue")) +
-    # 设置主题，调整画幅长宽比、坐标轴刻度和标签字体大小
+    # 
     theme(
-      aspect.ratio = 1/1.2,  # 调整长宽比
-      axis.text = element_text(size = 12),  # 坐标轴刻度字体大小
-      axis.title = element_text(size = 14)  # 坐标轴标签字体大小
+      aspect.ratio = 1/1.2, 
+      axis.text = element_text(size = 12),
+      axis.title = element_text(size = 14)
     )
   
   return(p)
