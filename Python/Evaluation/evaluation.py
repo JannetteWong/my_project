@@ -9,26 +9,26 @@ import matplotlib.pyplot as plt
 class Evaluation(object):
     def calculate_f_metrics(self):
         """
-        计算给定数据集中cell_type（真实类别）和e_celltype（预测类别）两列对应的F宏和F微指标，
-        并将结果保存在一个数据框中返回。
+        Calculate the macro-F1 and micro-F1 scores for the given dataset with columns 'cell_type' (true labels) and 'e_celltype' (predicted labels), 
+        and return the results in a DataFrame.
 
-        参数：
-        data (pd.DataFrame): 包含cell_type和e_celltype列的数据集
+        Parameters:
+        data (pd.DataFrame): Dataset containing 'cell_type' and 'e_celltype' columns
 
-        返回：
-        pd.DataFrame: 包含F宏和F微指标结果的数据框
+        Returns:
+        pd.DataFrame: A DataFrame containing the macro-F1 and micro-F1 scores
         """
-        # 获取真实类别和预测类别列数据
+        # Retrieve true labels and predicted labels
         y_true = self['cell_type'].tolist()
         y_pred = self['e_celltype'].tolist()
 
-        # 计算Micro-F1
+        # Calculate Micro-F1
         micro_f1 = f1_score(y_true, y_pred, average='micro')
 
-        # 计算Macro-F1
+        # Calculate Macro-F1
         macro_f1 = f1_score(y_true, y_pred, average='macro')
 
-        # 创建结果数据框
+        # Create results DataFrame
         result_df = pd.DataFrame({
             'metric': ['Macro-F1', 'Micro-F1'],
             'value': [macro_f1, micro_f1]
@@ -36,6 +36,13 @@ class Evaluation(object):
         return result_df
     
     def calculate_fmi(self):
+        """
+        Calculate the Fowlkes-Mallows Index (FMI) for the given dataset with columns 'cell_type' (true labels) and 'e_celltype' (predicted labels),
+        and return the result in a DataFrame.
+
+        Returns:
+        pd.DataFrame: A DataFrame containing the FMI score
+        """
         y_true = self['cell_type'].tolist()
         y_pred = self['e_celltype'].tolist()
         fmi = fowlkes_mallows_score(y_true, y_pred)
@@ -46,6 +53,13 @@ class Evaluation(object):
         return result_df
     
     def calculate_ri(self):
+        """
+        Calculate the Rand Index (RI) for the given dataset with columns 'cell_type' (true labels) and 'e_celltype' (predicted labels),
+        and return the result in a DataFrame.
+
+        Returns:
+        pd.DataFrame: A DataFrame containing the RI score
+        """
         y_true = self['cell_type'].tolist()
         y_pred = self['e_celltype'].tolist()
         ri = rand_score(y_true, y_pred)
@@ -56,14 +70,21 @@ class Evaluation(object):
         return result_df
     
     def ari(self):
-        # 获取真实类别和预测类别列数据
+        """
+        Calculate the Adjusted Rand Index (ARI) for the given dataset with columns 'cell_type' (true labels) and 'e_celltype' (predicted labels),
+        and return the result in a DataFrame.
+
+        Returns:
+        pd.DataFrame: A DataFrame containing the ARI score
+        """
+        # Retrieve true labels and predicted labels
         y_true = self['cell_type'].tolist()
         y_pred = self['e_celltype'].tolist()
 
-        # 计算ARI
+        # Calculate ARI
         ari = adjusted_rand_score(y_true, y_pred)
 
-        # 创建结果数据框
+        # Create results DataFrame
         result_df = pd.DataFrame({
             'metric': 'ARI',
             'value': ari
@@ -71,14 +92,21 @@ class Evaluation(object):
         return result_df
     
     def nmi(self):
-        # 获取真实类别和预测类别列数据
+        """
+        Calculate the Normalized Mutual Information (NMI) score for the given dataset with columns 'cell_type' (true labels) and 'e_celltype' (predicted labels),
+        and return the result in a DataFrame.
+
+        Returns:
+        pd.DataFrame: A DataFrame containing the NMI score
+        """
+        # Retrieve true labels and predicted labels
         y_true = self['cell_type'].tolist()
         y_pred = self['e_celltype'].tolist()
 
-        # 计算NMI
+        # Calculate NMI
         nmi = normalized_mutual_info_score(y_true, y_pred)
 
-        # 创建结果数据框
+        # Create results DataFrame
         result_df = pd.DataFrame({
             'metric': 'NMI',
             'value': nmi
